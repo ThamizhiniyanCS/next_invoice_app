@@ -1,3 +1,5 @@
+import { db } from "@/db";
+import { Invoices } from "@/db/schema";
 import {
   Table,
   TableBody,
@@ -13,8 +15,8 @@ import { CirclePlus } from "lucide-react";
 import Link from "next/link";
 
 /**
- * 
- * Continue from 00:25:00 - Adding a new Create Invoice Form
+ *
+ * Continue from 01:20:11 - List Invoices in a DataTable
  */
 
 export default function Home() {

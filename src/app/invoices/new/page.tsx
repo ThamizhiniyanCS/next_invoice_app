@@ -15,20 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-const NewInvoiceFormSchema = z.object({
-  name: z.string().min(2).max(50),
-  email: z.string().email(),
-  value: z.string().min(2).max(50),
-  description: z
-    .string()
-    .min(10, {
-      message: "Description must be at least 10 characters.",
-    })
-    .max(150, {
-      message: "Description must not be longer than 150 characters.",
-    }),
-});
+import { NewInvoiceFormSchema } from "@/lib/zodSchemas";
+import { CreateNewInvoiceAction } from "@/lib/actions";
+import { Loader } from "lucide-react";
 
 const NewInvoiceForm = () => {
   const form = useForm<z.infer<typeof NewInvoiceFormSchema>>({
@@ -41,8 +30,10 @@ const NewInvoiceForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof NewInvoiceFormSchema>) {
-    console.log(values);
+  const isSubmitting = form.formState.isSubmitting;
+
+  async function onSubmit(values: z.infer<typeof NewInvoiceFormSchema>) {
+    await CreateNewInvoiceAction(values);
   }
 
   return (
@@ -125,7 +116,14 @@ const NewInvoiceForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">Submit</Button>
+          <Button
+            type="submit"
+            className="w-full flex justify-center items-center"
+            disabled={isSubmitting}
+          >
+            {!isSubmitting && <span>Submit</span>}
+            {isSubmitting && <Loader className="animate-spin" />}
+          </Button>
         </form>
       </Form>
     </div>
