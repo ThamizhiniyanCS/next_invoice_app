@@ -11,6 +11,8 @@
     "migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@clerk/elements": "^0.19.9",
+    "@clerk/nextjs": "^6.5.2",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",

@@ -5,10 +5,17 @@ import { db } from "@/db";
 import { NewInvoiceFormSchema } from "@/lib/zodSchemas";
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
 export async function CreateNewInvoiceAction(
   formdata: z.infer<typeof NewInvoiceFormSchema>
 ) {
+  /**
+   * Checking whether the request is made with authentication
+   */
+  const { userId }: { userId: string | null } = await auth();
+  if (!userId) return null;
+
   const parsed = await NewInvoiceFormSchema.safeParseAsync(formdata);
 
   if (parsed.success) {
