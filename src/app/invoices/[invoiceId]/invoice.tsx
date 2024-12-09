@@ -1,6 +1,6 @@
 "use client";
 
-import { Invoices } from "@/db/schema";
+import { Customers, Invoices } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
@@ -26,7 +26,13 @@ import { AVAILABLE_STATUSES } from "@/data/invoices";
 import { UpdateInvoiceStatusAction, DeleteInvoiceAction } from "@/lib/actions";
 import { useOptimistic } from "react";
 
-const Invoice = ({ invoice }: { invoice: typeof Invoices.$inferSelect }) => {
+const Invoice = ({
+  invoice,
+}: {
+  invoice: typeof Invoices.$inferSelect & {
+    customer: typeof Customers.$inferSelect;
+  };
+}) => {
   const [currentStatus, setCurrentStatus] = useOptimistic(
     invoice.status,
     (state, newStatus) => {
@@ -137,14 +143,14 @@ const Invoice = ({ invoice }: { invoice: typeof Invoices.$inferSelect }) => {
                       className="w-full h-full"
                     >
                       <input type="hidden" name="id" value={invoice.id} />
-                      <Butston
+                      <Button
                         type="submit"
                         variant="destructive"
                         className="w-full h-full text-left flex items-center gap-2"
                       >
                         <Trash2 className="w-4 h-auto" />
                         Delete
-                      </Butston>
+                      </Button>
                     </form>
                   </DialogFooter>
                 </DialogHeader>
@@ -170,12 +176,12 @@ const Invoice = ({ invoice }: { invoice: typeof Invoices.$inferSelect }) => {
 
         <div className="flex mt-4">
           <p className="w-[150px]">Billing Name</p>
-          <p>Will be updated !!!</p>
+          <p>{invoice.customer.name}</p>
         </div>
 
         <div className="flex mt-4">
           <p className="w-[150px]">Billing Email</p>
-          <p>Will be updated !!!</p>
+          <p>{invoice.customer.email}</p>
         </div>
       </Container>
     </main>
