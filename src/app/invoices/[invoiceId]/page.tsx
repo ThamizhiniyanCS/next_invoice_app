@@ -5,7 +5,11 @@ import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import Invoice from "./invoice";
 
-const InvoiceDetail = async ({ params }: { params: { invoiceId: string } }) => {
+const InvoiceDetail = async ({
+  params,
+}: {
+  params: { invoiceId: string };
+}) => {
   const { invoiceId } = await params;
 
   const { userId, orgId } = await auth();

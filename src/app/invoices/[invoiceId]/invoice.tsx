@@ -25,6 +25,7 @@ import { ChevronDown, Trash2, Ellipsis, CreditCard } from "lucide-react";
 import { AVAILABLE_STATUSES } from "@/data/invoices";
 import { UpdateInvoiceStatusAction, DeleteInvoiceAction } from "@/lib/actions";
 import { useOptimistic } from "react";
+import Link from "next/link";
 
 const Invoice = ({
   invoice,
@@ -47,7 +48,12 @@ const Invoice = ({
       await UpdateInvoiceStatusAction(formData);
     } catch (error) {
       setCurrentStatus(originalStatus);
+      console.log(error);
     }
+  }
+
+  async function handleDeleteInvoice(formData: FormData) {
+    await DeleteInvoiceAction(formData);
   }
 
   return (
@@ -114,19 +120,14 @@ const Invoice = ({
                     </DialogTrigger>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <form
-                      action={DeleteInvoiceAction}
-                      className="w-full h-full"
+                    <Link
+                      href={`/invoices/${invoice.id}/payment`}
+                      type="submit"
+                      className="w-full h-full text-left flex items-center gap-2"
                     >
-                      <input type="hidden" name="payment" value={invoice.id} />
-                      <button
-                        type="submit"
-                        className="w-full h-full text-left flex items-center gap-2"
-                      >
-                        <CreditCard className="w-4 h-auto" />
-                        Payment
-                      </button>
-                    </form>
+                      <CreditCard className="w-4 h-auto" />
+                      Payment
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -139,7 +140,7 @@ const Invoice = ({
                   </DialogDescription>
                   <DialogFooter>
                     <form
-                      action={DeleteInvoiceAction}
+                      action={handleDeleteInvoice}
                       className="w-full h-full"
                     >
                       <input type="hidden" name="id" value={invoice.id} />
